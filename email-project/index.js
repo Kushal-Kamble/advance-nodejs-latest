@@ -2,19 +2,19 @@ const express = require('express');
 const app = express();
 const nodemailer = require('nodemailer')
 const path = require('path')
-const port = 3000;
+const port = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 const transporter = nodemailer.createTransport({
-  host : 'smtp.gmail.com',
+  host : 'email-smtp.us-east-1.amazonaws.com',
   port: 587,
   secure: false, 
   auth: {
-    user: 'youremail@gmail.com',
-    pass: 'yourpassword'
+    user: 'AKIA5OQ6466FZWEYNNVJ',
+    pass: 'BB8uQenn6fCEjW791mFxeUgQ39xwI/9PEBDPz7uasG58'
   }
 })
 
@@ -26,7 +26,7 @@ app.post('/send-email', async (req, res) =>{
 
   try{
     const info = await transporter.sendMail({
-      from: '"Yahu Baba" <helloyahoobaba@gmail.com>',
+      from: '"Kushal Kamble" <kushal.kamble@mitsde.com>',
       to: to,
       subject : subject,
       text : text,

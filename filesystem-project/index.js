@@ -4,7 +4,7 @@ const fs = require('fs')
 
 // Write File
 app.get('/write-file', (req, res) => {
-  fs.writeFile('./public/output.txt', 'This is a test message.', (err) =>{
+  fs.writeFile('./public/output.txt', 'This is a test message kushal output.', (err) =>{
     if(err){
       return res.status(500).send("Failed to write file")
     }
@@ -237,6 +237,6 @@ app.get('/file-exists', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-    console.log(`Server is running on port 3000`);
+app.listen(5000, () => {
+    console.log(`Server is running on port 5000`);
 });

@@ -1,0 +1,157 @@
+<!-- views/email-template.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title><%= subject %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* ===== Base Styles ===== */
+    body {
+      background-color: #f5f7fb;
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #212428;
+    }
+
+    .email-wrapper {
+      width: 100%;
+      background-color: #f5f7fb;
+      padding: 30px 0;
+    }
+
+    .email-container {
+      background-color: #ffffff;
+      max-width: 650px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ===== Header Section ===== */
+    .email-header {
+      background-color: #fe9e43;
+      text-align: center;
+      padding: 25px 0;
+    }
+
+    .email-header img {
+      width: 100px;
+      height: auto;
+    }
+
+    .email-header h1 {
+      color: #fff;
+      margin: 10px 0 0;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* ===== Body Section ===== */
+    .email-body {
+      padding: 30px;
+      text-align: left;
+    }
+
+    .email-body h2 {
+      color: #212428;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .email-body p {
+      color: #555;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* ===== Call to Action Button ===== */
+    .btn-primary {
+      background-color: #fe9e43;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-size: 16px;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #ff8c22;
+    }
+
+    /* ===== Footer Section ===== */
+    .email-footer {
+      background-color: #212428;
+      color: #fefffe;
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+    }
+
+    .email-footer a {
+      color: #fe9e43;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .email-body {
+        padding: 20px;
+      }
+
+      .email-header h1 {
+        font-size: 20px;
+      }
+
+      .btn-primary {
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="email-wrapper">
+    <div class="email-container">
+      <!-- Header -->
+      <div class="email-header">
+        <!-- Replace below logo URL with your real logo path -->
+        <img src="https://chsculture.org/wp-content/uploads/2021/12/Newsletter.png" alt="WorkSmart Logo">
+        <h1>WorkSmart</h1>
+      </div>
+
+      <!-- Body -->
+      <div class="email-body">
+        <h2>Hello <%= name %> 👋</h2>
+        <p>
+          <%= message %>
+        </p>
+
+        <p>Click the button below to explore more:</p>
+        <a href="https://myworksmart.in" class="btn-primary" target="_blank">Visit WorkSmart</a>
+
+        <p style="margin-top: 25px;">
+          If you have any queries, feel free to reply to this email.<br>
+          We’re always happy to help you!
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="email-footer">
+        <p>© <%= new Date().getFullYear() %> WorkSmart. All rights reserved.</p>
+        <p>
+          <a href="https://myworksmart.in">myworksmart.in</a> | 
+          <a href="mailto:support@myworksmart.in">support@myworksmart.in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

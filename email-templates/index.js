@@ -1,53 +1,66 @@
+// ===============================================
 // index.js
+// ===============================================
+// Ye Node.js app email bhejne ke liye banaya gaya hai
+// Ye Nodemailer + EJS templates + .env config ka use karta hai
+// ===============================================
+
+// -------------------------
+// 1️⃣ Required Modules
+// -------------------------
 const express = require('express');
 const app = express();
 const nodemailer = require('nodemailer');
 const path = require('path');
-const ejs = require('ejs'); // <-- ensure ejs is required
-const fs = require('fs');   // <-- for reading file
+const ejs = require('ejs');
+const fs = require('fs');
+require('dotenv').config(); // .env file ko load karta hai
 const port = 5000;
 
+// -------------------------
+// 2️⃣ Middlewares
+// -------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); // view engine set for EJS templates
 
-// =======================
-// 1️⃣ SMTP Transport Setup
-// =======================
+// -------------------------
+// 3️⃣ SMTP Configuration (from .env file)
+// -------------------------
 const transporter = nodemailer.createTransport({
-  host: 'email-smtp.us-east-1.amazonaws.com',
-  port: 587,
-  secure: false,
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false, // port 587 ke liye false rakho (TLS auto hota hai)
   auth: {
-    user: 'AKIA5OQ6466FZWEYNNVJ',
-    pass: 'BB8uQenn6fCEjW791mFxeUgQ39xwI/9PEBDPz7uasG58'
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
   }
 });
 
-// =======================
-// 2️⃣ Route to send Email
-// =======================
+// ================================
+// 4️⃣ Single Email Route
+// ================================
 app.post('/send-email', async (req, res) => {
-  const { to, subject, text } = req.body;
+  const { to, subject, text } = req.body; // form se data le raha hai
 
   try {
-    // Step 1: Read email-template.ejs file
+    // Step 1️⃣: EJS email template padho
     const templatePath = path.join(__dirname, 'views', 'email-template.ejs');
     const template = fs.readFileSync(templatePath, 'utf-8');
 
-    // Step 2: Render EJS template into HTML
+    // Step 2️⃣: Template me dynamic values inject karo
     const html = ejs.render(template, {
-      name: 'Kushal Kamble', // static ya DB se laa sakte ho
+      name: 'Kushal Kamble', // yahan tum dynamic name bhi use kar sakte ho
       subject: subject,
       message: text
     });
 
-    // Step 3: Send Email
+    // Step 3️⃣: Mail send karo
     const info = await transporter.sendMail({
-      from: '"Kushal Kamble" <kushal.kamble@mitsde.com>',
-      to: to,
+      from: '"WorkSmart" <kushal.kamble@mitsde.com>', // ✅ verified email in AWS SES
+      to: to, // single recipient
       subject: subject,
-      html: html, // <-- EJS rendered HTML yahan jaayega
+      html: html, // beautiful HTML template
       attachments: [
         {
           filename: 'data.pdf',
@@ -56,6 +69,7 @@ app.post('/send-email', async (req, res) => {
       ]
     });
 
+    // Step 4️⃣: Success Response
     res.json({ message: '✅ Email sent successfully', info });
   } catch (error) {
     console.error('❌ Error:', error);
@@ -63,42 +77,52 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-// =======================
-// 3️⃣ Render Mail Form Page
-// =======================
+// ================================
+// 5️⃣ Render Mail Form Page (Default Page)
+// ================================
 app.get('/', (req, res) => {
-  res.render('mailpage');
+  res.render('mailpage'); // Single email form
 });
 
-// =======================
-
-// =======================
-// 🆕  Route to Render Multi Email Page
-// =======================
+// ================================
+// 6️⃣ Render Multi Email Form Page
+// ================================
 app.get('/multi-email', (req, res) => {
-  res.render('multimailpage'); // renders the new form
+  res.render('multimailpage'); // Multiple email form page
 });
 
-// =======================
-// 🆕  Route to Send Multiple Emails via BCC
-// =======================
+// ================================
+// 7️⃣ Multi Email Send Route (BCC)
+// ================================
 app.post('/send-multi-email', async (req, res) => {
   const { bcc, subject, text } = req.body;
 
   try {
-    // Convert comma-separated emails into array & trim spaces
-    const bccList = bcc.split(',').map(email => email.trim()).filter(email => email !== '');
+    // Step 1️⃣: BCC email list ko array me convert karo
+    const bccList = bcc
+      .split(',')
+      .map(email => email.trim())
+      .filter(email => email !== '');
 
     if (bccList.length === 0) {
-      return res.status(400).json({ message: 'No valid BCC emails provided.' });
+      return res.status(400).json({ message: '⚠️ No valid BCC emails provided.' });
     }
 
+    // Step 2️⃣: Multiemail EJS template render karo
+    const templatePath = path.join(__dirname, 'views', 'multiemail-template.ejs');
+    const template = fs.readFileSync(templatePath, 'utf-8');
+    const html = ejs.render(template, {
+      subject: subject,
+      message: text
+    });
+
+    // Step 3️⃣: Send mail using BCC
     const info = await transporter.sendMail({
-      from: '"Kushal Kamble" <kushal.kamble@mitsde.com>',
-      to: '', // you can leave 'to' blank if only BCC is used
+      from: '"WorkSmart" <kushal.kamble@mitsde.com>', // ✅ verified email
+      to: '', // blank since we’re using BCC
       bcc: bccList, // multiple recipients here
       subject: subject,
-      html: `<h3>${subject}</h3><p>${text}</p>`,
+      html: html,
       attachments: [
         {
           filename: 'data.pdf',
@@ -107,6 +131,7 @@ app.post('/send-multi-email', async (req, res) => {
       ]
     });
 
+    // Step 4️⃣: Response to browser
     res.json({
       message: `✅ Email successfully sent to ${bccList.length} recipients.`,
       bccList,
@@ -118,8 +143,9 @@ app.post('/send-multi-email', async (req, res) => {
   }
 });
 
-// 4️⃣ Start Server
-// =======================
+// ================================
+// 8️⃣ Start Express Server
+// ================================
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });

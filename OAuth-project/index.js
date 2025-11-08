@@ -3,7 +3,7 @@ const passport = require('passport')
 const session = require('express-session')
 const app = express();
 require('./auth/google')
-const port = 3000;
+const port = 5000;
 
 // Session Setup
 app.use(session({
@@ -41,6 +41,7 @@ app.get('/auth/google/callback',
     res.redirect('/')
   }
 
+  // route banaye hai niche profile ke liye aise route bna skte hai
   app.get('/profile',authCheck,(req, res) =>{
     
     // console.log(req.user)

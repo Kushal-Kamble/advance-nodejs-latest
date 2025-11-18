@@ -1,0 +1,18 @@
+body {
+    font-family: Arial;
+    padding: 20px;
+}
+
+form input, textarea {
+    width: 300px;
+    padding: 10px;
+    margin: 6px 0;
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #3c8dbc;
+    color: white;
+    border: none;
+}

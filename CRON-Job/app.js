@@ -11,7 +11,25 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-cron.schedule('* * * * *',async () => {
+// * * * * * 
+// minute, hour, day, month, day
+// minute (0-59), hour (0-23), day of month (1-31), month (1-12), day of week (0-6) (sunday = 0)
+// * * * * * example every minutes
+// */5 * * * * example every 5 minutes
+// 0 * * * * example every hour
+// 0 0 * * * example every day
+// 0 0 1 * * example every month
+// 0 0 1 1 * example every year
+// 0 9 * * * example every day at 9 am
+// 0 0 * * * example every day at 12 am (midnight)
+// 0 12 * * * example every day at 12 pm (noon)
+// 0 0 1 * * example every day at 1 am
+// 0 0 * * 1 example every saturday
+// 0 0 1 1 0 example every sunday
+// 0 0 1 1 1 example every monday
+// 0 0 1 1 2 example every tuesday
+
+cron.schedule('* * * * *',async () => { // har minute baad run ho every minute
   try{
     const timestamp = new Date().toISOString().replace(/[:.]/g,"-")
     const destination = path.join(backupDir, `backup-${timestamp}`)

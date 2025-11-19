@@ -1,0 +1,42 @@
+body {
+    background: #111;
+}
+
+.chat-box {
+    height: 480px;
+    overflow-y: auto;
+    background: #ece5dd;
+    padding: 15px;
+}
+
+/* My message (Right side) */
+.myMsg {
+    background: #d1f4cc;
+    color: #000;
+    padding: 8px 12px;
+    margin: 8px;
+    max-width: 70%;
+    border-radius: 10px 10px 0 10px;
+    float: right;
+    clear: both;
+}
+
+/* Other user message (Left side) */
+.otherMsg {
+    background: #fff;
+    color: #000;
+    padding: 8px 12px;
+    margin: 8px;
+    max-width: 70%;
+    border-radius: 10px 10px 10px 0;
+    float: left;
+    clear: both;
+}
+
+/* Timestamp */
+.time {
+    font-size: 11px;
+    color: #555;
+    margin-top: 3px;
+    float: right;
+}

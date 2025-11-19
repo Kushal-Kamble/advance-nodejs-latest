@@ -14,7 +14,7 @@
   <script>
     document.querySelector("#rzp-button").onclick = async function() {
       var amount = document.querySelector("#pay-amount").value;
-console.log(amount)
+      console.log(amount)
       const order = await fetch("/create-order", {
         method: "POST",
         headers: { "Content-Type":"application/json"},

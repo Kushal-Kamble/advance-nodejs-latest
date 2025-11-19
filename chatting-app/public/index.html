@@ -21,13 +21,13 @@
   <script>
     const socket = io()
 
-    const input = document.querySelector('#input')
-    const btn = document.querySelector('#sendbtn')
+    const input = document.querySelector('#input') // document ke andar jaayo aur #input es id ko target kro
+    const btn = document.querySelector('#sendbtn') //  
     const toggleButton = document.querySelector('#toggle-btn')
 
     btn.onclick = (e) => {
-      e.preventDefault();
-      socket.emit('message', input.value.trim());
+      e.preventDefault(); // default functionality band kr de 
+      socket.emit('message', input.value.trim()); // emit se client side se server pe massage bhej sakte hai
       input.value = '';
     }
 
@@ -38,7 +38,7 @@
     })
 
     toggleButton.onclick = (e) => {
-      e.preventDefault();
+      e.preventDefault(); 
       if(socket.connected){
         toggleButton.innerText = 'Connect';
         socket.disconnect();
@@ -51,3 +51,9 @@
   </script>
 </body>
 </html>
+
+<!-- es client se massage aayega index.js pe -->
+
+<!-- o socket es variable pe aayega -->
+
+<!-- sabse pehle massage server pe jaata hai aur server check krta hai mere sath kon konse client attached hai -->

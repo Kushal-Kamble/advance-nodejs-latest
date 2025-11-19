@@ -1,17 +1,17 @@
-const express = require('express');
-const Razorpay = require('razorpay')
+const express = require('express'); // sabse pehle expresss packge ko include kiya hai
+const Razorpay = require('razorpay') // razorpay package ko include kiya hai
 const dotenv = require('dotenv')
-const path = require('path')
+const path = require('path') // path 
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
 const { error } = require('console');
 
 dotenv.config();
 
-const app = express();
+const app = express(); // phir yha humne uska object bnaya hai matlab instance 
 
-app.set("view engine", "ejs")
-app.use(express.json())
-app.use(express.static("public"))
+app.set("view engine", "ejs")// ejs template ko use krne waala hooo me
+app.use(express.json()) // form ki informatin json me lunga
+app.use(express.static("public")) // static folder name
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -19,7 +19,7 @@ const razorpay = new Razorpay({
 })
 
 app.get("/", (req, res) => {
-  res.render("index", { key: process.env.RAZORPAY_KEY_ID })
+  res.render("index", { key: process.env.RAZORPAY_KEY_ID }) //automatic page open hoga
 })
 
 // Create Order Route
@@ -35,7 +35,7 @@ app.post("/create-order", async (req, res) => {
     res.json(order);
 
   }catch(err){
-    res.status(500).send({error: err.message })
+    res.status(500).send({error: err.message }) // 500 means server error
   }
 })
 
@@ -63,5 +63,5 @@ app.get("/payment-success", (req, res) => {
   res.sendFile(path.join(__dirname, 'views/success.html'))
 })
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

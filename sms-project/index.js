@@ -43,3 +43,38 @@ app.get('/', (req, res) => {
 app.listen(3000, () => console.log('Server running on port 3000'));
 
 // // git rm -r --cached node_modules
+
+
+
+// ✅ Step 2: Git cache से सभी node_modules हटाएँ
+
+// अपने repo की root directory में यह command चलाएँ:
+
+// git rm -r --cached node_modules
+
+
+// अगर आपके पास कई sub-projects के node_modules हैं (जैसे screenshot में):
+
+// git rm -r --cached **/node_modules
+
+
+// या फिर पूरे repository में हर जगह से हटाने के लिए:
+
+// git rm -r --cached .
+
+
+// और फिर सिर्फ clean files add करें:
+
+// git add .
+
+// ✅ Step 3: Commit & Push करें
+// git commit -m "Remove node_modules and apply .gitignore"
+// git push
+
+// 🎉 Result
+
+// अब चाहे आप git add . हज़ार बार चलाएं,
+// node_modules कभी भी Git में add नहीं होंगे।
+
+
+

@@ -1,0 +1,30 @@
+body {
+    background: #1e1e2e;
+    font-family: "Poppins", sans-serif;
+}
+
+.chat-box {
+    height: 450px;
+    overflow-y: auto;
+    background: #2a2a3c;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.message {
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+.me {
+    background-color: #0d6efd;
+    color: white;
+    margin-left: auto;
+}
+
+.other {
+    background-color: #444456;
+    color: white;
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Chat App — Hindi</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Moment.js -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-dark">
+
+<div class="container py-4">
+    <h3 class="text-center text-white mb-3">💬 रीयल-टाइम चैट (Socket.io + MongoDB)</h3>
+
+    <div class="row">
+        <!-- Left: chat area -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong id="meLabel">Username: —</strong>
+                        <span class="text-muted ms-2" id="statusLabel"></span>
+                    </div>
+                    <div>
+                        <button class="btn btn-warning btn-sm me-2" id="notifyBtn">Enable Notifications</button>
+                        <button class="btn btn-danger btn-sm" id="disconnectBtn">Disconnect</button>
+                    </div>
+                </div>
+
+                <div class="card-body chat-container p-0 d-flex">
+                    <!-- messages -->
+                    <div class="flex-grow-1 p-3 chat-box" id="messages"></div>
+
+                    <!-- online users sidebar -->
+                    <div class="bg-light border-start users-panel" style="width: 220px;">
+                        <div class="p-2 small text-muted">Online Users</div>
+                        <ul id="usersList" class="list-group list-group-flush"></ul>
+                    </div>
+                </div>
+
+                <div class="px-3 pb-2 small text-muted" id="typingStatus" style="display:none;">कोई टाइप कर रहा है...</div>
+
+                <div class="input-group p-3">
+                    <input id="messageInput" class="form-control" placeholder="अपना मैसेज लिखें..." autocomplete="off">
+                    <button class="btn btn-primary" id="sendBtn">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: optional info -->
+        <div class="col-md-4 d-none d-md-block">
+            <div class="card p-3">
+                <h6>Instructions</h6>
+                <ul>
+                    <li>सबसे पहले अपना नाम डालो (login modal)</li>
+                    <li>Enter या Send से मैसेज भेजो</li>
+                    <li>Notifications enable करने के लिए बटन दबाओ</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Login — अपना नाम डालो</h5>
+      </div>
+      <div class="modal-body">
+        <input id="usernameInput" class="form-control" placeholder="आपका नाम (30 characters max)" maxlength="30">
+      </div>
+      <div class="modal-footer">
+        <button id="loginBtn" class="btn btn-primary">Join Chat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Socket.io client -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Bootstrap JS (for modal) — LOAD BEFORE client.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="client.js"></script>
+
+</body>
+</html>

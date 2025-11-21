@@ -1,3 +1,6 @@
+// important topic of javascript function ,  callback, object
+
+
 var a = 5;
 var b = 6;
 
@@ -70,6 +73,11 @@ console.log(filterAges);
 
 
 // ************************************
+
+
+// callback function
+// khana khane ke baad market chale jaana
+// es kaam ke baad o kam krna matlab ek kaam ke khtam hon eke baad dusra lam start kr dena
 
 
 

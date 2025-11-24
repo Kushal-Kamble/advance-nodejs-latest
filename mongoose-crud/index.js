@@ -29,6 +29,8 @@ app.get("/", (req, res) => {
 // Server start
 const PORT = process.env.PORT || 5000;
 
+// process .env file me jo variable hai use hum process.env.PORT se access krte hai 
+
 app.listen(PORT, () => {
     console.log(`🚀 Server start on  this  PORT: ${PORT}`);
 });

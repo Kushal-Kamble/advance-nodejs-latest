@@ -1,0 +1,7 @@
+
+
+body { background: #f5f7fb; }
+.navbar-brand { color: #fe9e43 !important; font-weight:700; }
+.drag-area { border:2px dashed #6c757d; padding:20px; border-radius:10px; text-align:center; background:#fff; cursor:pointer; }
+.drag-area.active { border-color:#fe9e43; background:#fff8f0; }
+

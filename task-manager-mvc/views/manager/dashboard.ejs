@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <%- include('../partials/head') %>
+  <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
+  <title>Manager Dashboard</title>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-4">
+  <h2>Manager Dashboard</h2>
+  <div class="mb-3">
+    <a class="btn btn-primary" href="/manager/create-task">Create Task</a>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">Add Employee</button>
+  </div>
+
+  <h4>Your Employees</h4>
+  <div id="employeeTable"></div>
+
+  <hr>
+  <h4>Tasks Assigned By You</h4>
+  <div id="taskTable"></div>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployeeModal">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <h5>Add Employee</h5>
+      <input id="empName" class="form-control mb-2" placeholder="Name">
+      <input id="empEmail" class="form-control mb-2" placeholder="Email">
+      <input id="empPassword" class="form-control mb-2" placeholder="Password (optional)">
+      <button class="btn btn-primary" id="saveEmployee">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
+<script src="/public/js/managerDashboard.js"></script>
+</body>
+</html>

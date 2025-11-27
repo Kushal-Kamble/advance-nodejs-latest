@@ -1,0 +1,12 @@
+/* public/css/taskCreate.css - styling for drag area and form */
+.drop-area{
+  border: 2px dashed #e6e9ee;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  background: #fbfdfe;
+  transition: border-color .2s, background .2s;
+}
+.drop-area .drop-inner { display:flex; gap:12px; align-items:center; justify-content:center; flex-direction:column; color:#777; }
+.drop-area.highlight { border-color: #fe9e43; background: #fff8f0; box-shadow: 0 6px 18px rgba(254,158,67,0.06); }
+.drop-area svg { opacity: .9; }

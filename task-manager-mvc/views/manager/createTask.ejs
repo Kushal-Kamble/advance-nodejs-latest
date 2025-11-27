@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head><%- include('../partials/head') %><title>Create Task</title></head>
+<body>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-4 col-md-8">
+  <div class="card p-4 shadow">
+    <h3>Create New Task</h3>
+    <form id="createTaskForm">
+      <input id="title" class="form-control mb-2" placeholder="Title" required>
+      <textarea id="description" class="form-control mb-2" placeholder="Description"></textarea>
+      <label>Deadline</label>
+      <input id="deadline" type="datetime-local" class="form-control mb-2" required>
+      <label>Assign to</label>
+      <select id="employeeSelect" class="form-control mb-2"></select>
+      <div id="dropArea" class="drag-area mb-2">Drag & Drop File Here or click to browse</div>
+      <input id="hiddenFile" type="file" style="display:none" />
+      <button class="btn btn-success w-100">Create Task</button>
+    </form>
+  </div>
+</div>
+
+<script src="/public/js/taskCreate.js"></script>
+</body>
+</html>

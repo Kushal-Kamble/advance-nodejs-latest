@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <%- include('../partials/head') %>
+  <title>Admin Dashboard</title>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-4">
+  <h2>Admin Dashboard - Analytics</h2>
+
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <canvas id="statusChart"></canvas>
+    </div>
+    <div class="col-md-4">
+      <canvas id="managerChart"></canvas>
+    </div>
+    <div class="col-md-4">
+      <canvas id="monthlyChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const token = localStorage.getItem('token');
+if (!token) { window.location.href = '/login'; }
+
+async function loadStats() {
+  const res = await fetch('/api/admin/stats', { headers: { Authorization: `Bearer ${token}` }});
+  const data = await res.json();
+
+  // status pie
+  new Chart(document.getElementById('statusChart'), {
+    type: 'pie',
+    data: {
+      labels: data.statusLabels,
+      datasets: [{ data: data.statusCounts }]
+    }
+  });
+
+  // manager bar
+  new Chart(document.getElementById('managerChart'), {
+    type: 'bar',
+    data: {
+      labels: data.managerDist.map(m => m.manager),
+      datasets: [{ label: 'Tasks Assigned', data: data.managerDist.map(m => m.count) }]
+    }
+  });
+
+  // monthly line
+  new Chart(document.getElementById('monthlyChart'), {
+    type: 'line',
+    data: {
+      labels: data.months,
+      datasets: [{ label: 'Tasks Created', data: data.monthlyCounts, fill: true }]
+    }
+  });
+}
+
+loadStats();
+</script>
+</body>
+</html>

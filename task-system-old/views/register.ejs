@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register - Task System</title>
+  <link rel="stylesheet" href="/libs/bootstrap.min.css" />
+  <style>
+    body { background:#eef3fb; font-family: Arial, sans-serif; }
+    .card { max-width:520px; margin:4rem auto; padding:1.6rem; border-radius:10px; box-shadow:0 6px 20px rgba(10,20,40,.06);}
+    .error { color:#b00020; text-align:center; margin-top:.6rem; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h4 class="mb-3 text-center">Employee Register</h4>
+
+    <form id="registerForm">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">First Name</label>
+          <input id="firstName" class="form-control" required />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Last Name</label>
+          <input id="lastName" class="form-control" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input id="email" type="email" class="form-control" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input id="password" type="password" class="form-control" required minlength="6" />
+      </div>
+
+      <button class="btn btn-success w-100" type="submit">Register</button>
+    </form>
+
+    <p class="text-center mt-3">
+      Already have account? <a href="/login">Login</a>
+    </p>
+
+    <p class="error" id="errorMsg"></p>
+  </div>
+
+  <script src="/js/register.js"></script>
+</body>
+</html>

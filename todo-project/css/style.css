@@ -1,0 +1,167 @@
+
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .dashboard-card,
+    .stats-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      transition: 0.3s ease;
+    }
+
+    .dashboard-card:hover,
+    .stats-card:hover {
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .dashboard-logo {
+      height: 45px;
+      /* ⬅️ Increase height as needed */
+      width: auto;
+    }
+
+
+    .stats-card {
+      border-radius: 16px;
+      background-color: #fff;
+      padding: 1.5rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    }
+
+    .stats-number {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .stats-label {
+      color: #6c757d;
+      font-size: 1rem;
+    }
+
+    .stats-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    /* Custom color backgrounds for icons */
+    .icon-total {
+      background-color: #4285f4;
+    }
+
+    .icon-pending {
+      background-color: #fbbc04;
+    }
+
+    .icon-completed {
+      background-color: #34a853;
+    }
+
+
+    .btn-brand {
+      background: #fe9e43;
+      color: #fff;
+    }
+
+    .btn-brand:hover {
+      background: #5a32a3;
+        color: #fff;
+    }
+
+    .card-body h5 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .card-body p {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #voiceBtn {
+  background-color: #f57421;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(245, 116, 33, 0.4);
+  position: fixed;              /* Fixed position */
+  bottom: 20px;                 /* Distance from bottom */
+  right: 20px;                  /* Distance from right */
+  z-index: 1050;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+#voiceBtn:hover {
+  background-color: #e9620f;
+  box-shadow: 0 0 20px #f57421aa, 0 0 40px #f57421aa;
+}
+
+#voiceBtn::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 60%);
+  animation: pulse 2s infinite;
+  border-radius: 50%;
+}
+
+#voiceBtn i {
+  margin-right: 8px;
+  animation: bounce 2s infinite;
+}
+
+@media (max-width: 767px) {
+  #voiceBtn {
+    bottom: 0px !important; /* Override bottom for mobile */
+  }
+}
+
+
+
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+    70% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+  }
+
+ 
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+ 

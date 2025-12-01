@@ -1,0 +1,345 @@
+<!-- views/admin_dashboard.ejs - Admin dashboard template -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - ToDo AI</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Toastify CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4 py-2">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="/images/mitsde-logo.svg" alt="Logo" class="dashboard-logo me-2">
+        <span class="fs-5 fw-semibold">ToDo AI - Admin</span>
+      </a>
+      <div class="d-flex align-items-center">
+        <span class="me-3 text-dark fw-semibold">
+          <i class="fas fa-user-shield me-1"></i> <%= user.name %> (Admin)
+        </span>
+        <a href="/logout" class="btn btn-outline-danger btn-sm">
+          <i class="fas fa-sign-out-alt me-1"></i> Logout
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Stats Cards -->
+  <div class="container mt-4">
+    <div class="row mb-4">
+      <!-- Total Tasks -->
+      <div class="col-12 col-md-4 mb-3">
+        <div class="stats-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="stats-number text-primary"><%= summary.total %></div>
+              <div class="stats-label">Total Tasks</div>
+            </div>
+            <div class="stats-icon icon-total"><i class="fas fa-tasks"></i></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pending Tasks -->
+      <div class="col-12 col-md-4 mb-3">
+        <div class="stats-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="stats-number text-warning"><%= summary.pending %></div>
+              <div class="stats-label">Pending</div>
+            </div>
+            <div class="stats-icon icon-pending"><i class="fas fa-clock"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Tasks -->
+      <div class="col-12 col-md-4 mb-3">
+        <div class="stats-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="stats-number text-success"><%= summary.completed %></div>
+              <div class="stats-label">Completed</div>
+            </div>
+            <div class="stats-icon icon-completed"><i class="fas fa-check-circle"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+      <!-- Priority Distribution Chart -->
+      <div class="col-12 col-md-6 mb-3">
+        <div class="dashboard-card">
+          <h5><i class="fas fa-chart-bar me-2"></i>Priority Distribution 12</h5>
+          <div class="chart-container">
+            <canvas id="priorityBarChart"></canvas>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- User Task Distribution Chart -->
+      <div class="col-12 col-md-6 mb-3">
+        <div class="dashboard-card">
+          <h5><i class="fas fa-chart-line me-2"></i>User Task Distribution</h5>
+          <div class="chart-container">
+            <canvas id="userTaskChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Tasks Table -->
+    <div class="dashboard-card">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <h4><i class="fas fa-list-check me-2"></i>All User Tasks</h4>
+        <div class="d-flex gap-2">
+          <a href="/admin/export-tasks?format=csv" class="btn btn-success btn-sm">
+            <i class="fas fa-file-csv me-1"></i> Export CSV
+          </a>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>User</th>
+              <th>Priority</th>
+              <th>Start</th>
+              <th>Deadline</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tasks.forEach(task => { %>
+              <tr>
+                <td><%= task._id.toString().slice(-6) %></td>
+                <td><%= task.title %></td>
+                <td><%= task.user_id.name %></td>
+                <td>
+                  <span class="badge bg-<%= task.priority === 'High' ? 'danger' : (task.priority === 'Medium' ? 'warning text-dark' : 'success') %>">
+                    <%= task.priority %>
+                  </span>
+                </td>
+                <td><%= new Date(task.start_date).toLocaleDateString() %></td>
+                <td><%= new Date(task.deadline).toLocaleDateString() %></td>
+                <td>
+                  <% if (task.completed) { %>
+                    <span class="badge bg-success">Completed</span>
+                  <% } else { %>
+                    <span class="badge bg-danger">Pending</span>
+                  <% } %>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <!-- Edit Button -->
+                    <button class="btn btn-edit btn-sm" onclick="editTask('<%= task._id %>')" title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    
+                    <!-- Delete Button -->
+                    <button class="btn btn-delete btn-sm" onclick="deleteTask('<%= task._id %>')" title="Delete">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                    
+                    <!-- Send Reminder -->
+                    <% if (!task.completed) { %>
+                      <button class="btn btn-sm send-reminder-btn" style="background-color:#fc9636; color:white;" 
+                              data-id="<%= task._id %>" title="Send Reminder">
+                        <i class="fas fa-envelope"></i>
+                      </button>
+                    <% } %>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Task Modal -->
+  <div class="modal fade" id="editTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editTaskForm">
+            <input type="hidden" id="editTaskId" name="task_id">
+            
+            <div class="mb-3">
+              <label for="editTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="editTitle" name="title" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editPriority" class="form-label">Priority</label>
+              <select class="form-select" id="editPriority" name="priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editDeadline" class="form-label">Deadline</label>
+              <input type="date" class="form-control" id="editDeadline" name="deadline" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editStatus" class="form-label">Status</label>
+              <select class="form-select" id="editStatus" name="completed">
+                <option value="0">Pending</option>
+                <option value="1">Completed</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="updateTask()">Update Task</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+  <!-- Chart Initialization -->
+  <script>
+    // Priority Bar Chart
+    const priorityCtx = document.getElementById('priorityBarChart').getContext('2d');
+    new Chart(priorityCtx, {
+      type: 'bar',
+      data: {
+        labels: <%= JSON.stringify(priorityData.map(p => p.priority)) %>,
+        datasets: [{
+          label: 'Tasks',
+          data: <%= JSON.stringify(priorityData.map(p => p.count)) %>,
+          backgroundColor: ['#34a853', '#fbbc04', '#ea4335']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+
+    // User Task Chart
+    const userTaskCtx = document.getElementById('userTaskChart').getContext('2d');
+    new Chart(userTaskCtx, {
+      type: 'bar',
+      data: {
+        labels: <%= JSON.stringify(userTaskData.map(u => u.name)) %>,
+        datasets: [{
+          label: 'Tasks per User',
+          data: <%= JSON.stringify(userTaskData.map(u => u.task_count)) %>,
+          backgroundColor: '#4285f4'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+
+    // Edit Task Function
+    function editTask(taskId) {
+      $.post('/admin/get-task', { task_id: taskId }, function(task) {
+        $('#editTaskId').val(task._id);
+        $('#editTitle').val(task.title);
+        $('#editPriority').val(task.priority);
+        $('#editDeadline').val(task.deadline.split('T')[0]);
+        $('#editStatus').val(task.completed ? '1' : '0');
+        $('#editTaskModal').modal('show');
+      });
+    }
+
+    // Update Task Function
+    function updateTask() {
+      const formData = $('#editTaskForm').serialize();
+      $.post('/admin/update-task', formData, function(response) {
+        if (response === 'success') {
+          $('#editTaskModal').modal('hide');
+          Toastify({
+            text: "✅ Task updated!",
+            backgroundColor: "#28a745"
+          }).showToast();
+          setTimeout(() => location.reload(), 1500);
+        }
+      });
+    }
+
+    // Delete Task Function
+    function deleteTask(taskId) {
+      if (confirm('Delete this task?')) {
+        $.post('/admin/delete-task', { task_id: taskId }, function(response) {
+          if (response === 'success') {
+            Toastify({
+              text: "🗑️ Task deleted!",
+              backgroundColor: "#dc3545"
+            }).showToast();
+            setTimeout(() => location.reload(), 1500);
+          }
+        });
+      }
+    }
+
+    // Send Reminder
+    $('.send-reminder-btn').click(function() {
+      const taskId = $(this).data('id');
+      const btn = $(this);
+      btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+      
+      $.post('/admin/send-reminder', { task_id: taskId }, function(response) {
+        if (response === 'success') {
+          Toastify({
+            text: "📧 Reminder sent!",
+            backgroundColor: "#28a745"
+          }).showToast();
+        }
+        btn.prop('disabled', false).html('<i class="fas fa-envelope"></i>');
+      });
+    });
+
+    // Welcome Toast
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === '1') {
+      Toastify({
+        text: "🎉 Welcome <%= user.name %>! Admin Dashboard Ready",
+        duration: 4000,
+        backgroundColor: "#28a745"
+      }).showToast();
+    }
+  </script>
+
+</body>
+</html>
